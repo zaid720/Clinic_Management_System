@@ -14,6 +14,8 @@ import java.sql.ResultSet;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -28,11 +30,15 @@ public class CtlVisit implements IVisit {
 
     @Override
     public Integer count() {
-        return getAll().size();
+        try {
+            return getAll().size();
+        } catch (DataNotFoundException ex) {
+            return 0;
+        }
     }
 
     @Override
-    public ArrayList<MVisit> getAll() {
+    public ArrayList<MVisit> getAll() throws DataNotFoundException {
         array.clear();
         try {
             String sql = "select v.ID, a.ID, a.Appointment_date, a.Status, v.Visit_date, v.Diagnosis, v.Notes, v.Created_at"
@@ -57,6 +63,10 @@ public class CtlVisit implements IVisit {
             }
         }
 
+        if (array.size() <= 0) {
+            throw new DataNotFoundException("Not found data");
+        }
+
         return array;
     }
 
@@ -71,7 +81,7 @@ public class CtlVisit implements IVisit {
             stmt.setString(4, obj.getNotes());
             stmt.setTimestamp(5, Timestamp.valueOf(LocalDateTime.now()));
             stmt.executeUpdate();
-        } catch (SQLException ex){
+        } catch (SQLException ex) {
             ex.printStackTrace();
         } finally {
             try {
@@ -85,7 +95,7 @@ public class CtlVisit implements IVisit {
 
     @Override
     public void remove(Integer id) {
-         try {
+        try {
             String sql = "update tbl_visits set Active = ? where ID = ?";
             stmt = ClsConnect.getConnection().prepareStatement(sql);
             stmt.setBoolean(1, false);
@@ -114,7 +124,7 @@ public class CtlVisit implements IVisit {
             stmt.setString(4, obj.getNotes());
             stmt.setInt(5, obj.getId());
             stmt.executeUpdate();
-        } catch (SQLException ex){
+        } catch (SQLException ex) {
             ex.printStackTrace();
         } finally {
             try {
@@ -128,7 +138,11 @@ public class CtlVisit implements IVisit {
 
     @Override
     public MVisit getById(Integer id) {
-        return getAll().stream().filter(x -> x.getId() == id).findFirst().orElse(null);
+        try {
+            return getAll().stream().filter(x -> x.getId() == id).findFirst().orElse(null);
+        } catch (DataNotFoundException ex) {
+            return null;
+        }
     }
 
     @Override

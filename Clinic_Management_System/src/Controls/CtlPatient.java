@@ -8,7 +8,6 @@ import Connect.ClsConnect;
 import Interface.IPatient;
 import Models.MPatient;
 import Models.MUpcomingAppointment;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -130,7 +129,11 @@ public class CtlPatient implements IPatient {
 
     @Override
     public MPatient getById(Integer id) {
-        return getAll().stream().filter(x -> x.getId() == id).findFirst().orElse(null);
+        try {
+            return getAll().stream().filter(x -> x.getId() == id).findFirst().orElse(null);
+        } catch (DataNotFoundException ex) {
+            return null;
+        }
     }
 
     @Override
@@ -160,14 +163,12 @@ public class CtlPatient implements IPatient {
     }
 
     @Override
-    public ArrayList<MPatient> getAll() /*throws DataNotFoundException*/ {
+    public ArrayList<MPatient> getAll() throws DataNotFoundException {
         array.clear();
         String sql = "select ID, Full_name, Age, Gender, Phone, Address, Medication_notes, Created_at from tbl_patients  where Active = 1";
         try {
             stmt = ClsConnect.getConnection().prepareStatement(sql);
             rs = stmt.executeQuery();
-            /* if(rs.next() ==false) 
-                throw new  DataNotFoundException("not found");*/
             while (rs.next()) {
                 array.add(new MPatient(rs.getInt("ID"), rs.getString("Full_name"), rs.getInt("Age"), rs.getString("Gender"), rs.getString("Phone"), rs.getString("Address"), rs.getString("Medication_notes"), rs.getTimestamp("Created_at").toLocalDateTime()));
             }
@@ -182,12 +183,21 @@ public class CtlPatient implements IPatient {
                 ex.printStackTrace();
             }
         }
+        
+        if (array.size() <= 0) {
+            throw new DataNotFoundException("Not found data");
+        }
+        
         return array;
     }
 
     @Override
     public Integer count() {
-        return getAll().size();
+        try {
+            return getAll().size();
+        } catch (DataNotFoundException ex) {
+            return 0;
+        }
     }
 
 }

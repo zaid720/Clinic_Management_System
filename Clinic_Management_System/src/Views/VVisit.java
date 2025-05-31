@@ -1,6 +1,7 @@
 package Views;
 
 import Controls.CtlVisit;
+import Controls.DataNotFoundException;
 import Models.MVisit;
 import cell.TableActionCellEditor;
 import cell.TableActionCellRender;
@@ -8,6 +9,8 @@ import cell.TableActionEvent;
 import direction.Direction;
 import java.awt.ComponentOrientation;
 import java.awt.Frame;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javaswingdev.card.ModelCard;
 import javaswingdev.system.SystemColor;
 import javax.swing.RowFilter;
@@ -77,8 +80,12 @@ public class VVisit extends javax.swing.JPanel {
     private void setData() {
         model = (DefaultTableModel) tblVisits.getModel();
         model.setRowCount(0);
-        for (MVisit read : visit.getAll()) {
-            model.addRow(new Object[]{read.getId(), read.getNumAppointment(), read.getAppointment_date(), read.getAppointment_status(), read.getVisit_date(), read.getDiagnosis(), read.getNotes(), read.getCreated_at().toLocalDate()});
+        try {
+            for (MVisit read : visit.getAll()) {
+                model.addRow(new Object[]{read.getId(), read.getNumAppointment(), read.getAppointment_date(), read.getAppointment_status(), read.getVisit_date(), read.getDiagnosis(), read.getNotes(), read.getCreated_at().toLocalDate()});
+            }
+        } catch (DataNotFoundException ex) {
+            System.out.println("Not found data");
         }
         cardCountAppointments.setData(new ModelCard(null, null, null, visit.count().toString(), "عدد الزيارات"));
     }

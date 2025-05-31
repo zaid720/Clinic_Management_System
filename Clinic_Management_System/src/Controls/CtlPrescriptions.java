@@ -14,6 +14,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -27,7 +29,7 @@ public class CtlPrescriptions implements IPrescriptions {
     private ArrayList<Integer> numVisit = new ArrayList<Integer>();
 
     @Override
-    public ArrayList<MPrescriptions> getAll() {
+    public ArrayList<MPrescriptions> getAll() throws DataNotFoundException {
         array.clear();
         try {
             String sql = "select pr.ID, v.ID, pr.Medicatoin, pr.Dosage, pr.Duration, pr.Created_at "
@@ -50,12 +52,17 @@ public class CtlPrescriptions implements IPrescriptions {
                 ex.printStackTrace();
             }
         }
+
+        if (array.size() <= 0) {
+            throw new DataNotFoundException("Not found data");
+        }
+
         return array;
     }
 
     @Override
     public void insert(MPrescriptions obj) {
-         try {
+        try {
             String sql = "insert into tbl_prescriptions (Visit_id, Medicatoin, Dosage, Duration, Created_at) values (?, ?, ?, ?, ?)";
             stmt = ClsConnect.getConnection().prepareStatement(sql);
             stmt.setInt(1, obj.getNumVisit());
@@ -64,7 +71,7 @@ public class CtlPrescriptions implements IPrescriptions {
             stmt.setString(4, obj.getDuration());
             stmt.setTimestamp(5, Timestamp.valueOf(LocalDateTime.now()));
             stmt.executeUpdate();
-        } catch (SQLException ex){
+        } catch (SQLException ex) {
             ex.printStackTrace();
         } finally {
             try {
@@ -107,7 +114,7 @@ public class CtlPrescriptions implements IPrescriptions {
             stmt.setString(4, obj.getDuration());
             stmt.setInt(5, obj.getId());
             stmt.executeUpdate();
-        } catch (SQLException ex){
+        } catch (SQLException ex) {
             ex.printStackTrace();
         } finally {
             try {
@@ -121,12 +128,20 @@ public class CtlPrescriptions implements IPrescriptions {
 
     @Override
     public MPrescriptions getById(Integer id) {
-        return getAll().stream().filter(x -> x.getId() == id).findFirst().orElse(null);
+        try {
+            return getAll().stream().filter(x -> x.getId() == id).findFirst().orElse(null);
+        } catch (DataNotFoundException ex) {
+            return null;
+        }
     }
 
     @Override
     public Integer count() {
-        return getAll().size();
+        try {
+            return getAll().size();
+        } catch (DataNotFoundException ex) {
+            return 0;
+        }
     }
 
     @Override

@@ -81,7 +81,7 @@ public class VPatient extends javax.swing.JPanel {
             }
             cardCountPatients.setData(new ModelCard(null, null, null, patient.count().toString(), "عدد المرضى"));
         } catch (Exception ex) {
-            ex.printStackTrace();
+            System.out.println("Not found data");
         }
     }
 

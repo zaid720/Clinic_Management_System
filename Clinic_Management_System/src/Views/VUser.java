@@ -1,6 +1,7 @@
 package Views;
 
 import Controls.CtlUser;
+import Controls.DataNotFoundException;
 import Models.MPatient;
 import Models.MUser;
 import cell.TableActionCellEditor;
@@ -9,6 +10,8 @@ import cell.TableActionEvent;
 import direction.Direction;
 import java.awt.ComponentOrientation;
 import java.awt.Frame;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javaswingdev.card.ModelCard;
 import javax.swing.RowFilter;
 import javax.swing.SwingUtilities;
@@ -77,8 +80,12 @@ public class VUser extends javax.swing.JPanel {
         model = (DefaultTableModel) tblUsers.getModel();
         model.setRowCount(0);
 
-        for (MUser read : user.getAll()) {
-            model.addRow(new Object[]{read.getId(), read.getUsername(), read.getPassword(), read.getRole(), read.getFull_name(), read.getPhone(), read.getCreated_at().toLocalDate()});
+        try {
+            for (MUser read : user.getAll()) {
+                model.addRow(new Object[]{read.getId(), read.getUsername(), read.getPassword(), read.getRole(), read.getFull_name(), read.getPhone(), read.getCreated_at().toLocalDate()});
+            }
+        } catch (DataNotFoundException ex) {
+            System.out.println("Not found data");
         }
         cardCountUsers.setData(new ModelCard(null, null, null, user.count().toString(), "عدد المستخدمين"));
     }

@@ -1,3 +1,0 @@
-User: ali
-Password: ali123qwali
-Role: Doctor

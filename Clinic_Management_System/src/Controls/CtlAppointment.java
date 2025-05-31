@@ -16,8 +16,6 @@ import java.sql.Date;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -32,11 +30,15 @@ public class CtlAppointment implements IAppointment {
 
     @Override
     public Integer count() {
-        return getAll().size();
+        try {
+            return getAll().size();
+        } catch (DataNotFoundException ex) {
+            return 0;
+        }
     }
 
     @Override
-    public ArrayList<MAppointment> getAll() {
+    public ArrayList<MAppointment> getAll() throws DataNotFoundException {
         array.clear();
         try {
             String sql = "SELECT a.ID, p.Full_name, u.Username, a.Appointment_date, a.Appointment_time, a.Status, a.Created_at "
@@ -60,6 +62,10 @@ public class CtlAppointment implements IAppointment {
             } catch (SQLException ex) {
                 ex.printStackTrace();
             }
+        }
+
+        if (array.size() <= 0) {
+            throw new DataNotFoundException("Not found data");
         }
 
         return array;
@@ -135,7 +141,11 @@ public class CtlAppointment implements IAppointment {
 
     @Override
     public MAppointment getById(Integer id) {
-        return getAll().stream().filter(x -> x.getId() == id).findFirst().orElse(null);
+        try {
+            return getAll().stream().filter(x -> x.getId() == id).findFirst().orElse(null);
+        } catch (DataNotFoundException ex) {
+            return null;
+        }
     }
 
     @Override

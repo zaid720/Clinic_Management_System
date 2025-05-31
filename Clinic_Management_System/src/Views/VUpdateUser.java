@@ -6,10 +6,13 @@ package Views;
 
 import Controls.CtlPatient;
 import Controls.CtlUser;
+import Controls.DataNotFoundException;
 import Models.MPatient;
 import Models.MUser;
 import java.awt.Frame;
 import java.time.LocalDateTime;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -250,15 +253,19 @@ public class VUpdateUser extends javax.swing.JDialog {
                     mUser.setFull_name(txtFullName.getText().trim());
                     mUser.setPhone(txtPhone.getText());
                     mUser.setCreated_at(LocalDateTime.now());
-                    for (MUser read : user.getAll()) {
-                        if (!read.getUsername().equalsIgnoreCase(name)) {
-                            if (!read.getPhone().equalsIgnoreCase(phone)) {
-                                if (read.getUsername().equalsIgnoreCase(txtUser.getText().trim()) | read.getPhone().equals(txtPhone.getText())) {
-                                    check = false;
-                                    break;
+                    try {
+                        for (MUser read : user.getAll()) {
+                            if (!read.getUsername().equalsIgnoreCase(name)) {
+                                if (!read.getPhone().equalsIgnoreCase(phone)) {
+                                    if (read.getUsername().equalsIgnoreCase(txtUser.getText().trim()) | read.getPhone().equals(txtPhone.getText())) {
+                                        check = false;
+                                        break;
+                                    }
                                 }
                             }
                         }
+                    } catch (DataNotFoundException ex) {
+                        System.out.println("Not found data");
                     }
 
                     if (check) {

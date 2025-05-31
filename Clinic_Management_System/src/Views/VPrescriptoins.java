@@ -85,7 +85,7 @@ public class VPrescriptoins extends javax.swing.JPanel {
             }
             cardCountPrescriptions.setData(new ModelCard(null, null, null, prescription.count().toString(), "عدد الوصفات الطبية"));
         } catch (Exception ex) {
-            ex.printStackTrace();
+            System.out.println("Not found data");
         }
     }
 

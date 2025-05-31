@@ -92,7 +92,7 @@ public class VAppointment extends javax.swing.JPanel {
             }
             cardCountAppointments.setData(new ModelCard(null, null, null, appointment.count().toString(), "عدد المواعيد"));
         } catch (Exception ex) {
-            ex.printStackTrace();
+            System.out.println("Not found data");
         }
     }
 

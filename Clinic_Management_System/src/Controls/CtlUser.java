@@ -7,12 +7,13 @@ package Controls;
 import Connect.ClsConnect;
 import Interface.IUser;
 import Models.MUser;
-import com.sun.jdi.connect.spi.Connection;
 import java.sql.SQLException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -52,7 +53,7 @@ public class CtlUser implements IUser {
     }
 
     @Override
-    public ArrayList<MUser> getAll() {
+    public ArrayList<MUser> getAll() throws DataNotFoundException {
         array.clear();
         String sqlQeury = "Select * from tbl_users where Active = 1";
         try {
@@ -72,6 +73,11 @@ public class CtlUser implements IUser {
                 ex.printStackTrace();
             }
         }
+        
+        if (array.size() <= 0) {
+            throw new DataNotFoundException("not Found Data");
+        }
+        
         return array;
     }
 
@@ -179,12 +185,20 @@ public class CtlUser implements IUser {
 
     @Override
     public MUser getById(Integer id) {
-        return getAll().stream().filter(x -> x.getId() == id).findFirst().orElse(null);
+        try {
+            return getAll().stream().filter(x -> x.getId() == id).findFirst().orElse(null);
+        } catch (DataNotFoundException ex) {
+            return null;
+        }
     }
 
     @Override
     public Integer count() {
-        return getAll().size();
+        try {
+            return getAll().size();
+        } catch (DataNotFoundException ex) {
+            return 0;
+        }
     }
 
 }
