@@ -10,6 +10,7 @@ import java.awt.Frame;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
+import javax.swing.SwingUtilities;
 
 /**
  *
@@ -18,7 +19,7 @@ import java.util.Date;
 public class VUpdateVisit extends javax.swing.JDialog {
 
     private CtlVisit visit = new CtlVisit();
-    private VMessage message = new VMessage((java.awt.Frame) javax.swing.SwingUtilities.getWindowAncestor(VUpdateVisit.this), true);
+    private VMessage message = new VMessage((Frame) SwingUtilities.getWindowAncestor(VUpdateVisit.this), true);
 
     /**
      * Creates new form VUpdatePatients

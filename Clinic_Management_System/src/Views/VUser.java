@@ -10,14 +10,17 @@ import direction.Direction;
 import java.awt.ComponentOrientation;
 import java.awt.Frame;
 import javaswingdev.card.ModelCard;
+import javax.swing.RowFilter;
 import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 
 public class VUser extends javax.swing.JPanel {
 
     private CtlUser user = new CtlUser();
     private DefaultTableModel model;
     private VMessage message = new VMessage((Frame) SwingUtilities.getWindowAncestor(VUser.this), true);
+    private TableRowSorter<DefaultTableModel> rowSorter;
 
     public VUser() {
         initComponents();
@@ -26,6 +29,9 @@ public class VUser extends javax.swing.JPanel {
 
     private void init() {
         Direction.applyComponentOrientationRecursively(this, ComponentOrientation.RIGHT_TO_LEFT);
+        model = (DefaultTableModel) tblUsers.getModel();
+        rowSorter = new TableRowSorter<>(model);
+        tblUsers.setRowSorter(rowSorter);
         TableActionEvent event = new TableActionEvent() {
             @Override
             public void onUpdate(int row) {
@@ -86,6 +92,7 @@ public class VUser extends javax.swing.JPanel {
         jScrollPane1 = new javax.swing.JScrollPane();
         tblUsers = new javaswingdev.swing.table.Table();
         btnAdd = new com.raven.swing.Button();
+        txtSearch = new com.raven.swing.MyTextField();
 
         setOpaque(false);
 
@@ -142,6 +149,14 @@ public class VUser extends javax.swing.JPanel {
             }
         });
 
+        txtSearch.setForeground(new java.awt.Color(0, 0, 0));
+        txtSearch.setPrefixIcon(new javax.swing.ImageIcon(getClass().getResource("/Views/search.png"))); // NOI18N
+        txtSearch.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtSearchKeyReleased(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -149,6 +164,8 @@ public class VUser extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addGap(48, 48, 48)
                 .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(51, 51, 51)
+                .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 339, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(30, 30, 30)
@@ -163,7 +180,9 @@ public class VUser extends javax.swing.JPanel {
                 .addGap(13, 13, 13)
                 .addComponent(cardCountUsers, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(roundPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(20, 20, 20))
@@ -177,11 +196,21 @@ public class VUser extends javax.swing.JPanel {
         setData();
     }//GEN-LAST:event_btnAddActionPerformed
 
+    private void txtSearchKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSearchKeyReleased
+        String searchText = txtSearch.getText();
+        if (searchText.trim().length() == 0) {
+            rowSorter.setRowFilter(null); // إظهار الكل
+        } else {
+            rowSorter.setRowFilter(RowFilter.regexFilter("(?i)" + searchText));
+        }
+    }//GEN-LAST:event_txtSearchKeyReleased
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private com.raven.swing.Button btnAdd;
     private javaswingdev.card.Card cardCountUsers;
     private javax.swing.JScrollPane jScrollPane1;
     private javaswingdev.swing.RoundPanel roundPanel1;
     private javaswingdev.swing.table.Table tblUsers;
+    private com.raven.swing.MyTextField txtSearch;
     // End of variables declaration//GEN-END:variables
 }

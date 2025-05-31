@@ -1,16 +1,23 @@
 package javaswingdev.main;
 
+import Views.Launcher;
 import Views.Login;
 import Views.VAppointment;
 import Views.VHome;
+import Views.VMessage;
 import Views.VPatient;
 import Views.VPrescriptoins;
+import Views.VUpdateVisit;
 import Views.VUser;
 import Views.VVisit;
+import com.mysql.cj.protocol.Message;
 import java.awt.Component;
 import java.awt.ComponentOrientation;
 import javaswingdev.menu.EventMenuSelected;
 import direction.Direction;
+import java.awt.Frame;
+import java.io.File;
+import javax.swing.SwingUtilities;
 
 public class Main extends javax.swing.JFrame {
 
@@ -22,6 +29,8 @@ public class Main extends javax.swing.JFrame {
         init();
     }
 
+    private VMessage message = new VMessage((Frame) SwingUtilities.getWindowAncestor(Main.this), true);
+    
     public Main(String role) {
         initComponents();
         this.role = role;
@@ -49,10 +58,38 @@ public class Main extends javax.swing.JFrame {
                     if (role.equalsIgnoreCase("Admin")) {
                         showForm(new VUser());
                     }
+                } else if (index == 6 && indexSubMenu == 0) {
+                    logOut();
+                    Login login = new Login();
+                    login.setVisible(true);
+                    dispose();
                 }
             }
         });
         menu.setSelectedIndex(0, 0);
+    }
+
+    private void logOut() {
+        // مسار المجلد الذي تريد حذف الملفات منه
+        File folder = new File("files");
+
+        // تحقق إذا كان فعلاً مجلد
+        if (folder.isDirectory()) {
+            // الحصول على قائمة الملفات والمجلدات داخل هذا المجلد
+            File[] files = folder.listFiles();
+
+            if (files != null) {
+                for (File file : files) {
+                    // فقط حذف الملفات، لا يمسح المجلدات الفرعية
+                    if (file.isFile()) {
+                        boolean deleted = file.delete();
+                    }
+                }
+            }
+        } else {
+            message.setLblTitle("لم يتم تسجيل الدخول");
+            message.setVisible(true);
+        }
     }
 
     public void showForm(Component com) {
@@ -150,23 +187,32 @@ public class Main extends javax.swing.JFrame {
                 if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
+
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Main.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Main.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Main.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Main.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Login().setVisible(true);
+//                new Login().setVisible(true);
+                   Launcher.main();
             }
         });
     }

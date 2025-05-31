@@ -78,6 +78,9 @@ public class Menu extends JPanel {
         
         addTitle("المستخدمين"); // Users
         addMenuItem(new ModelMenuItem(GoogleMaterialDesignIcon.PERSON, "المستخدمين"));
+        
+        addTitle("تسجيل خروج"); // Users
+        addMenuItem(new ModelMenuItem(GoogleMaterialDesignIcon.EXIT_TO_APP, "تسجيل خروج"));
     }
 
     // إنشاء JScrollPane مع إعدادات مخصصة لشريط التمرير العمودي فقط

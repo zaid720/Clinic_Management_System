@@ -23,7 +23,7 @@ public class MyTextField extends JTextField {
     public MyTextField() {
         setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         setBackground(new Color(0, 0, 0, 0));
-        setForeground(Color.decode("#7A8C8D"));
+        setForeground(Color.decode("#C7C7C7"));
         setFont(new Font("sansserif", Font.PLAIN, 13));
         setSelectionColor(new Color(75, 175, 152));
         setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);  // اجعل الاتجاه من اليمين

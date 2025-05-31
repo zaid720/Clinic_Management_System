@@ -1,2 +1,1 @@
-scrollbar.ScrollBarCustom
 com.raven.scrollbar.ScrollBarCustom

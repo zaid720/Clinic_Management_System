@@ -8,6 +8,11 @@ import Controls.CtlUser;
 import Models.MUser;
 import java.awt.Frame;
 import java.awt.Image;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import javaswingdev.main.Main;
 import javax.swing.ImageIcon;
@@ -22,6 +27,7 @@ public class Login extends javax.swing.JFrame {
     private CtlUser user = new CtlUser();
     private ArrayList<MUser> array;
     private VMessage message = new VMessage((Frame) SwingUtilities.getWindowAncestor(Login.this), true);
+    private String role = "";
 
     /**
      * Creates new form Login
@@ -34,6 +40,28 @@ public class Login extends javax.swing.JFrame {
         lblSlogan.setIcon(new ImageIcon(img));
     }
 
+    
+
+    private boolean logIn(String userName, String password) {
+        array = user.qeuryLogin(userName.trim());
+
+        for (MUser read : array) {
+            if (read.getPassword().equals(password) & read.getUsername().equalsIgnoreCase(userName.trim())) {
+                try {
+                    new File("files").mkdirs();
+
+                    FileWriter fileWriter = new FileWriter("files/" + txtUser.getText() + ".txt");
+                    fileWriter.write("User: " + txtUser.getText() + "\nPassword: " + txtPass.getText() + "\nRole: " + read.getRole());
+                    fileWriter.close();
+                    role = read.getRole();
+                    return true;
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        }
+        return false;
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -178,23 +206,13 @@ public class Login extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSignInActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSignInActionPerformed
-        array = user.qeuryLogin(txtUser.getText().trim());
-        
-        for (MUser read : array) {
-            if (read.getPassword().equals(txtPass.getText()) & read.getUsername().equalsIgnoreCase(txtUser.getText().trim())) {
-                new Main(read.getRole()).setVisible(true);
-                this.dispose();
-                break;
-            } else {
-                message.setLblTitle("الرجاء التأكد من الاسم أو كلمة المرور");
-                message.setVisible(true);
-                break;
-            }
-        }
-        
-        if (array.size() <= 0){
+        if (logIn(txtUser.getText(), txtPass.getText())) {
+            new Main(role).setVisible(true);
+            this.dispose();
+        } else {
             message.setLblTitle("الرجاء التأكد من الاسم أو كلمة المرور");
             message.setVisible(true);
+            txtUser.requestFocus();
         }
     }//GEN-LAST:event_btnSignInActionPerformed
 

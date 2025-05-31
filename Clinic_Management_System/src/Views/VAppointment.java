@@ -10,15 +10,18 @@ import java.awt.ComponentOrientation;
 import java.awt.Frame;
 import javaswingdev.card.ModelCard;
 import javaswingdev.system.SystemColor;
+import javax.swing.RowFilter;
 import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 
 public class VAppointment extends javax.swing.JPanel {
 
     private CtlAppointment appointment = new CtlAppointment();
-    private DefaultTableModel model;
     private VMessage message = new VMessage((Frame) SwingUtilities.getWindowAncestor(VAppointment.this), true);
-    MAppointment mAppointment;
+    private MAppointment mAppointment;
+    private DefaultTableModel model;
+    private TableRowSorter<DefaultTableModel> rowSorter;
 
     public VAppointment() {
         initComponents();
@@ -27,6 +30,9 @@ public class VAppointment extends javax.swing.JPanel {
 
     private void init() {
         Direction.applyComponentOrientationRecursively(this, ComponentOrientation.RIGHT_TO_LEFT);
+        model = (DefaultTableModel) tblAppointments.getModel();
+        rowSorter = new TableRowSorter<>(model);
+        tblAppointments.setRowSorter(rowSorter);
         roundPanel1.setColors(SystemColor.VAPPOINTMENT1, SystemColor.VAPPOINTMENT2);
         TableActionEvent event = new TableActionEvent() {
             @Override
@@ -99,6 +105,7 @@ public class VAppointment extends javax.swing.JPanel {
         jScrollPane1 = new javax.swing.JScrollPane();
         tblAppointments = new javaswingdev.swing.table.Table();
         btnAdd = new com.raven.swing.Button();
+        txtSearch = new com.raven.swing.MyTextField();
 
         setOpaque(false);
 
@@ -158,6 +165,14 @@ public class VAppointment extends javax.swing.JPanel {
             }
         });
 
+        txtSearch.setForeground(new java.awt.Color(0, 0, 0));
+        txtSearch.setPrefixIcon(new javax.swing.ImageIcon(getClass().getResource("/Views/search.png"))); // NOI18N
+        txtSearch.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtSearchKeyReleased(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -171,6 +186,8 @@ public class VAppointment extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addGap(48, 48, 48)
                 .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(54, 54, 54)
+                .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 339, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -179,7 +196,9 @@ public class VAppointment extends javax.swing.JPanel {
                 .addGap(13, 13, 13)
                 .addComponent(cardCountAppointments, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(roundPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(20, 20, 20))
@@ -193,11 +212,21 @@ public class VAppointment extends javax.swing.JPanel {
         setData();
     }//GEN-LAST:event_btnAddActionPerformed
 
+    private void txtSearchKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSearchKeyReleased
+        String searchText = txtSearch.getText();
+        if (searchText.trim().length() == 0) {
+            rowSorter.setRowFilter(null); // إظهار الكل
+        } else {
+            rowSorter.setRowFilter(RowFilter.regexFilter("(?i)" + searchText));
+        }
+    }//GEN-LAST:event_txtSearchKeyReleased
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private com.raven.swing.Button btnAdd;
     private javaswingdev.card.Card cardCountAppointments;
     private javax.swing.JScrollPane jScrollPane1;
     private javaswingdev.swing.RoundPanel roundPanel1;
     private javaswingdev.swing.table.Table tblAppointments;
+    private com.raven.swing.MyTextField txtSearch;
     // End of variables declaration//GEN-END:variables
 }
