@@ -11,6 +11,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import javaswingdev.main.Main;
 
 /**
  *
@@ -64,6 +65,9 @@ public class Launcher {
                         }
                         if (logIn(userName, password, role1)) {
                             new javaswingdev.main.Main(role1).setVisible(true);
+                        } else {
+                            new Main().logOut();
+                            new Login().setVisible(true);
                         }
                     } catch (IOException e) {
                         e.printStackTrace();

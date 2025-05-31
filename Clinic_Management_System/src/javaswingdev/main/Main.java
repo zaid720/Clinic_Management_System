@@ -7,10 +7,8 @@ import Views.VHome;
 import Views.VMessage;
 import Views.VPatient;
 import Views.VPrescriptoins;
-import Views.VUpdateVisit;
 import Views.VUser;
 import Views.VVisit;
-import com.mysql.cj.protocol.Message;
 import java.awt.Component;
 import java.awt.ComponentOrientation;
 import javaswingdev.menu.EventMenuSelected;
@@ -69,7 +67,7 @@ public class Main extends javax.swing.JFrame {
         menu.setSelectedIndex(0, 0);
     }
 
-    private void logOut() {
+    public void logOut() {
         // مسار المجلد الذي تريد حذف الملفات منه
         File folder = new File("files");
 

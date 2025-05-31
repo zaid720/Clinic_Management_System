@@ -26,11 +26,15 @@ public class MQeuryName {
     public String toString() {
         return name;
     }
-    
-        @Override
+
+    @Override
     public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (obj == null || getClass() != obj.getClass()) return false;
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
         MQeuryName other = (MQeuryName) obj;
         return id == other.id;
     }
