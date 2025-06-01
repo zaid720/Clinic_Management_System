@@ -1,2 +1,0 @@
-com.raven.scrollbar.ModernScrollBarUI
-com.raven.scrollbar.ModernScrollBarUI$ScrollBarButton
