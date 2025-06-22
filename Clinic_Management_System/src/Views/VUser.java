@@ -69,8 +69,8 @@ public class VUser extends javax.swing.JPanel {
                 }
             }
         };
-        tblUsers.getColumnModel().getColumn(7).setCellRenderer(new TableActionCellRender());
-        tblUsers.getColumnModel().getColumn(7).setCellEditor(new TableActionCellEditor(event));
+        tblUsers.getColumnModel().getColumn(tblUsers.getColumnCount()-1).setCellRenderer(new TableActionCellRender());
+        tblUsers.getColumnModel().getColumn(tblUsers.getColumnCount()-1).setCellEditor(new TableActionCellEditor(event));
 
         tblUsers.fixTable(jScrollPane1);
         setData();
