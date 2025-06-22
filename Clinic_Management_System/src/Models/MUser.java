@@ -1,16 +1,8 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package Models;
 
 import java.time.LocalDateTime;
 import personal.Personal;
 
-/**
- *
- * @author ITS
- */
 public class MUser extends Personal {
 
     private String username, password, role, full_name, phone;

@@ -1,22 +1,13 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package Models;
 
 import java.time.LocalDateTime;
 import personal.Personal;
 
-/**
- *
- * @author ITS
- */
 public class MPatient extends Personal {
 
     private int age;
     private String full_name, gender, address, medicat, phone;
     private boolean Active;
-//    private LocalDateTime created_at;
 
     public MPatient(int patient_id, String full_name, int age, String gender, String phone, String address, String medicat, LocalDateTime created_at) {
         super(patient_id, created_at);

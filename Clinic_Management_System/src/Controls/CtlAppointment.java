@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package Controls;
 
 import Connect.ClsConnect;
@@ -17,10 +13,6 @@ import java.sql.Time;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
-/**
- *
- * @author ITS
- */
 public class CtlAppointment implements IAppointment {
 
     private ArrayList<MAppointment> array = new ArrayList<MAppointment>();

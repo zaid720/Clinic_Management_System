@@ -13,10 +13,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import javaswingdev.main.Main;
 
-/**
- *
- * @author ITS
- */
 public class Launcher {
 
     private static CtlUser user = new CtlUser();

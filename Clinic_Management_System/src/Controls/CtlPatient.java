@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package Controls;
 
 import Connect.ClsConnect;
@@ -14,10 +10,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 
-/**
- *
- * @author ITS
- */
 public class CtlPatient implements IPatient {
 
     private ArrayList<MPatient> array = new ArrayList<MPatient>();

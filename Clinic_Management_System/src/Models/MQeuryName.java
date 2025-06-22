@@ -4,10 +4,6 @@
  */
 package Models;
 
-/**
- *
- * @author ITS
- */
 public class MQeuryName {
 
     private int id;
