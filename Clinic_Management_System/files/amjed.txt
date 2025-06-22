@@ -1,3 +1,0 @@
-User: amjed
-Password: amjed
-Role: Admin

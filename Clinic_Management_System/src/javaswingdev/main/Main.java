@@ -28,7 +28,7 @@ public class Main extends javax.swing.JFrame {
     }
 
     private VMessage message = new VMessage((Frame) SwingUtilities.getWindowAncestor(Main.this), true);
-    
+
     public Main(String role) {
         initComponents();
         this.role = role;
@@ -209,8 +209,7 @@ public class Main extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-//                new Login().setVisible(true);
-                   Launcher.main();
+                Launcher.main();
             }
         });
     }
